@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Core;
+using FriendOrganizer.DataAccess;
 using FriendOrganizer.UI.Data;
 using FriendOrganizer.UI.ViewModels;
 
@@ -10,6 +11,8 @@ namespace FriendOrganizer.UI.Startup
         public IContainer Bootstrap()
         {
             var builder = new ContainerBuilder();
+
+            builder.RegisterType<FriendOrganizerDbContext>().AsSelf();
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();
