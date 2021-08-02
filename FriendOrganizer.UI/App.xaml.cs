@@ -5,6 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
+using FriendOrganizer.UI.Data;
+using FriendOrganizer.UI.Startup;
+using FriendOrganizer.UI.ViewModels;
 
 namespace FriendOrganizer.UI
 {
@@ -13,5 +17,16 @@ namespace FriendOrganizer.UI
     /// </summary>
     public partial class App : Application
     {
+        private void App_OnStartup(object sender, StartupEventArgs e)
+        {
+            var bootstrapper = new Bootstrapper();
+
+            var container = bootstrapper.Bootstrap();
+
+
+            var mainWindow = container.Resolve<MainWindow>();
+
+            mainWindow.Show();
+        }
     }
 }
