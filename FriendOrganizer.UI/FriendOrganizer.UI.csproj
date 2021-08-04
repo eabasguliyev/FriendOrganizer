@@ -112,6 +112,8 @@
     <Compile Include="Views\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Services\IMessageDialogService.cs" />
+    <Compile Include="Views\Services\MessageDialogService.cs" />
     <Compile Include="Wrappers\FriendWrapper.cs" />
     <Compile Include="Wrappers\ModelWrapper.cs" />
     <Compile Include="Wrappers\NotifyDataErrorInfoBase.cs" />

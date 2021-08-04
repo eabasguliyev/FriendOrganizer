@@ -41,23 +41,7 @@ namespace FriendOrganizer.UI.ViewModels
 
             foreach (var item in items)
             {
-                Friends.Add(new NavigationItemViewModel(item.Id, item.DisplayMember));
-            }
-        }
-
-
-        public NavigationItemViewModel SelectedFriend
-        {
-            get => _selectedFriend;
-            set
-            {
-                _selectedFriend = value;
-                OnPropertyChanged();
-
-                if (_selectedFriend != null)
-                {
-                    _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Publish(_selectedFriend.Id);
-                }
+                Friends.Add(new NavigationItemViewModel(item.Id, item.DisplayMember, _eventAggregator));
             }
         }
     }

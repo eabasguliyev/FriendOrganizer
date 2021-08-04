@@ -5,6 +5,7 @@ using FriendOrganizer.UI.Data;
 using FriendOrganizer.UI.Data.Lookups;
 using FriendOrganizer.UI.Data.Repositories;
 using FriendOrganizer.UI.ViewModels;
+using FriendOrganizer.UI.Views.Services;
 using Prism.Events;
 
 namespace FriendOrganizer.UI.Startup
@@ -18,6 +19,8 @@ namespace FriendOrganizer.UI.Startup
             builder.RegisterType<FriendOrganizerDbContext>().AsSelf();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
+
+            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
 
             builder.RegisterType<MainWindow>().AsSelf();
             builder.RegisterType<MainViewModel>().AsSelf();

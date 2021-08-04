@@ -15,13 +15,12 @@ namespace FriendOrganizer.UI.ViewModels
         private readonly IFriendRepository _friendRepository;
         private readonly IEventAggregator _eventAggregator;
         private FriendWrapper _friend;
+        private bool _hasChanges;
 
         public FriendDetailViewModel(IFriendRepository friendRepository, IEventAggregator eventAggregator)
         {
             _friendRepository = friendRepository;
             _eventAggregator = eventAggregator;
-
-            _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Subscribe(OnOpenFriendDetailView);
 
             SaveCommand = new DelegateCommand(OnSaveExecute, OnSaveCanExecute);
         }
@@ -34,6 +33,11 @@ namespace FriendOrganizer.UI.ViewModels
 
             Friend.PropertyChanged += (s, e) =>
             {
+                if (!HasChanges)
+                {
+                    HasChanges = _friendRepository.HasChanges();
+                }
+
                 if (e.PropertyName == nameof(Friend.HasErrors))
                 {
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -58,10 +62,26 @@ namespace FriendOrganizer.UI.ViewModels
             }
         }
 
+        public bool HasChanges
+        {
+            get => _hasChanges;
+            set
+            {
+                if (_hasChanges != value)
+                {
+                    _hasChanges = value;
+                    //OnPropertyChanged(); // ??
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         private async void OnSaveExecute()
         {
             await _friendRepository.SaveAsync();
+            
+            HasChanges = _friendRepository.HasChanges();
+
             _eventAggregator.GetEvent<AfterFriendSavedEvent>().Publish(new AfterFriendSavedEventArgs()
             {
                 Id = Friend.Id,
@@ -73,12 +93,7 @@ namespace FriendOrganizer.UI.ViewModels
         {
             // TODO: if friend is modified
 
-            return Friend != null && !Friend.HasErrors;
-        }
-
-        private async void OnOpenFriendDetailView(int friendId)
-        {
-            await LoadAsync(friendId);
+            return Friend != null && !Friend.HasErrors && HasChanges;
         }
 
     }
