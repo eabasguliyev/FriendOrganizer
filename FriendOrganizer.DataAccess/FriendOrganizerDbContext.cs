@@ -11,6 +11,7 @@ namespace FriendOrganizer.DataAccess
     public class FriendOrganizerDbContext:DbContext
     {
         public DbSet<Friend> Friends { get; set; }
+        public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
 
 
         public FriendOrganizerDbContext():base("FriendOrganizerDb")
@@ -23,6 +24,8 @@ namespace FriendOrganizer.DataAccess
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new FriendConfiguration());
+
+            modelBuilder.Entity<ProgrammingLanguage>().Property(pl => pl.Name).IsRequired().HasMaxLength(50);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -57,6 +57,10 @@
     <Compile Include="Migrations\202108021443450_InitialDatabase.designer.cs">
       <DependentUpon>202108021443450_InitialDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108091427377_AddProgrammingLanguageTable.cs" />
+    <Compile Include="Migrations\202108091427377_AddProgrammingLanguageTable.designer.cs">
+      <DependentUpon>202108091427377_AddProgrammingLanguageTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +77,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202108021443450_InitialDatabase.resx">
       <DependentUpon>202108021443450_InitialDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108091427377_AddProgrammingLanguageTable.resx">
+      <DependentUpon>202108091427377_AddProgrammingLanguageTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
