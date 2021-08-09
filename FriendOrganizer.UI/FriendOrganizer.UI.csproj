@@ -95,6 +95,7 @@
     </ApplicationDefinition>
     <Compile Include="Data\Lookups\IFriendLookupDataService.cs" />
     <Compile Include="Data\Lookups\LookupDataService.cs" />
+    <Compile Include="Events\AfterFriendDeletedEvent.cs" />
     <Compile Include="Events\AfterFriendSavedEvent.cs" />
     <Compile Include="Events\OpenFriendDetailViewEvent.cs" />
     <Compile Include="Properties\Annotations.cs" />

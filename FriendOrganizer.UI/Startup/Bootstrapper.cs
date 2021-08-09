@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using System.Threading.Tasks;
+using Autofac;
 using Autofac.Core;
 using FriendOrganizer.DataAccess;
 using FriendOrganizer.UI.Data;
@@ -10,6 +12,26 @@ using Prism.Events;
 
 namespace FriendOrganizer.UI.Startup
 {
+    class AsyncRegistration<T>
+    {
+        private Func<IComponentContext, Task<T>> _resolve;
+
+        public AsyncRegistration(Func<IComponentContext, Task<T>> resolve)
+        {
+            _resolve = resolve;
+        }
+
+        public bool Resolved { get; private set; }
+
+        public T Value { get; private set; }
+
+        public async Task Resolve(IComponentContext context)
+        {
+            this.Value = await _resolve(context);
+            this.Resolved = true;
+        }
+    }
+
     public class Bootstrapper
     {
         public IContainer Bootstrap()
@@ -31,6 +53,40 @@ namespace FriendOrganizer.UI.Startup
 
             builder.RegisterType<LookupDataService>().AsImplementedInterfaces();
             builder.RegisterType<FriendRepository>().As<IFriendRepository>();
+
+            //builder.Register(async context =>
+            //{
+            //    return await Task.Run(() =>
+            //    {
+            //        return new Func<Task<FriendOrganizerDbContext>>(async () =>
+            //        {
+            //            return await Task.Run(() => new FriendOrganizerDbContext());
+            //        });
+            //    });
+            //}).AsSelf();
+
+            //builder.RegisterInstance(new AsyncRegistration<FriendOrganizerDbContext>(async context =>
+            //{
+            //    return await Task.Run(() => new FriendOrganizerDbContext());
+            //})).AsSelf();
+
+            //builder.Register<FriendOrganizerDbContext>(context =>
+            //{
+            //    var asyncRegistration = context.Resolve<AsyncRegistration<FriendOrganizerDbContext>>();
+            //    if (!asyncRegistration.Resolved)
+            //        throw new DependencyResolutionException(
+            //            $"Async component {typeof(FriendOrganizerDbContext).Name} has not been resolved");
+
+            //    return asyncRegistration.Value;
+            //});
+
+            //builder.Register(asycontext =>
+            //{
+            //    return new Task<FriendOrganizerDbContext>(async () =>
+            //    {
+            //        return await Task.Run(() => new FriendOrganizerDbContext());
+            //    });
+            //}).AsSelf();
 
             return builder.Build();
         }

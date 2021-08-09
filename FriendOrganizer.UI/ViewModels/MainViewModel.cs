@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using FriendOrganizer.Model;
 using FriendOrganizer.UI.Data;
 using FriendOrganizer.UI.Events;
 using FriendOrganizer.UI.Views.Services;
+using Prism.Commands;
 using Prism.Events;
 
 namespace FriendOrganizer.UI.ViewModels
@@ -17,6 +19,21 @@ namespace FriendOrganizer.UI.ViewModels
         private readonly IMessageDialogService _messageDialogService;
         private IFriendDetailViewModel _friendDetailViewModel;
 
+        public MainViewModel(INavigationViewModel navigationViewModel, Func<IFriendDetailViewModel> friendDetailViewModelCreator,
+            IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
+        {
+            _friendDetailViewModelCreator = friendDetailViewModelCreator;
+            _eventAggregator = eventAggregator;
+            _messageDialogService = messageDialogService;
+            NavigationViewModel = navigationViewModel;
+
+            _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Subscribe(OnOpenFriendDetailView);
+            _eventAggregator.GetEvent<AfterFriendDeletedEvent>().Subscribe(AfterFriendDeleted);
+            CreateNewFriendCommand = new DelegateCommand(OnCreateNewFriendExecute);
+        }
+
+
+        public ICommand CreateNewFriendCommand { get; set; }
         public INavigationViewModel NavigationViewModel { get; }
 
         public IFriendDetailViewModel FriendDetailViewModel
@@ -29,24 +46,13 @@ namespace FriendOrganizer.UI.ViewModels
             }
         }
 
-        public MainViewModel(INavigationViewModel navigationViewModel, Func<IFriendDetailViewModel> friendDetailViewModelCreator,
-            IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
-        {
-            _friendDetailViewModelCreator = friendDetailViewModelCreator;
-            _eventAggregator = eventAggregator;
-            _messageDialogService = messageDialogService;
-            NavigationViewModel = navigationViewModel;
-
-            _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Subscribe(OnOpenFriendDetailView);
-        }
-
         public async Task LoadAsync()
         {
             await NavigationViewModel.LoadAsync();
         }
 
 
-        private async void OnOpenFriendDetailView(int friendId)
+        private async void OnOpenFriendDetailView(int? friendId)
         {
             if (FriendDetailViewModel != null && FriendDetailViewModel.HasChanges)
             {
@@ -62,5 +68,14 @@ namespace FriendOrganizer.UI.ViewModels
             await FriendDetailViewModel.LoadAsync(friendId);
         }
 
+        private void OnCreateNewFriendExecute()
+        {
+            OnOpenFriendDetailView(null);
+        }
+
+        private void AfterFriendDeleted(int friendId)
+        {
+            FriendDetailViewModel = null;
+        }
     }
 }
