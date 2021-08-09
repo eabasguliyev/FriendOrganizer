@@ -57,6 +57,11 @@ namespace FriendOrganizer.UI.Wrappers
         {
             var errors = ValidateProperty(propertyName);
 
+            if (errors == null)
+            {
+                return;
+            }
+
             foreach (var error in errors)
             {
                 AddError(propertyName, error);

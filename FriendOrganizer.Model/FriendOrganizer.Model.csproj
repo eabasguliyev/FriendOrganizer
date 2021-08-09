@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Friend.cs" />
+    <Compile Include="FriendPhoneNumber.cs" />
     <Compile Include="LookupItem.cs" />
     <Compile Include="ProgrammingLanguage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

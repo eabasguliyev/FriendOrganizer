@@ -13,6 +13,8 @@ namespace FriendOrganizer.DataAccess
         public DbSet<Friend> Friends { get; set; }
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
 
+        public DbSet<FriendPhoneNumber> FriendPhoneNumbers { get; set; }
+
 
         public FriendOrganizerDbContext():base("FriendOrganizerDb")
         {
@@ -26,6 +28,8 @@ namespace FriendOrganizer.DataAccess
             modelBuilder.Configurations.Add(new FriendConfiguration());
 
             modelBuilder.Entity<ProgrammingLanguage>().Property(pl => pl.Name).IsRequired().HasMaxLength(50);
+
+            modelBuilder.Entity<FriendPhoneNumber>().Property(pn => pn.Number).IsRequired().HasMaxLength(50);
 
             base.OnModelCreating(modelBuilder);
         }
