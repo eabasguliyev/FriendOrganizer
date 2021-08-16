@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Threading;
 using System.Threading.Tasks;
 using FriendOrganizer.DataAccess;
 using FriendOrganizer.Model;
@@ -7,44 +8,21 @@ using FriendOrganizer.UI.Wrappers;
 
 namespace FriendOrganizer.UI.Data.Repositories
 {
-    public class FriendRepository : IFriendRepository
+    public class FriendRepository : GenericRepository<Friend, FriendOrganizerDbContext>, IFriendRepository
     {
-        private readonly FriendOrganizerDbContext _context;
-
-        public FriendRepository(FriendOrganizerDbContext context)
+        public FriendRepository(FriendOrganizerDbContext context) : base(context)
         {
-            _context = context;
         }
 
-        public async Task<Friend> GetByIdAsync(int friendId)
+        public override async Task<Friend> GetByIdAsync(int friendId)
         {
-            return await _context.Friends.Include(f => f.PhoneNumbers)
+            return await Context.Friends.Include(f => f.PhoneNumbers)
                 .SingleAsync(f => f.Id == friendId);
-        }
-
-        public async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
-        public bool HasChanges()
-        {
-            return _context.ChangeTracker.HasChanges();
-        }
-
-        public void Add(Friend friend)
-        {
-            _context.Friends.Add(friend);
-        }
-
-        public void Remove(Friend friend)
-        {
-            _context.Friends.Remove(friend);
         }
 
         public void RemovePhoneNumber(FriendPhoneNumber phoneNumber)
         {
-            _context.FriendPhoneNumbers.Remove(phoneNumber);
+            Context.FriendPhoneNumbers.Remove(phoneNumber);
         }
     }
 }

@@ -27,11 +27,11 @@
 
         <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <MenuItem Header="Create">
-                <MenuItem Header="New Friend" Command="{Binding CreateNewFriendCommand}"/>
+                <MenuItem Header="New Friend" Command="{Binding CreateNewDetailCommand}" CommandParameter="{x:Type viewModel:FriendDetailViewModel}"/>
             </MenuItem>
         </Menu>
         <view:NavigationView Grid.Row="1" Grid.Column="0" DataContext="{Binding NavigationViewModel}"/>
 
-        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding FriendDetailViewModel}"></ContentControl>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding DetailViewModel}"/>
     </Grid>
 </Window>
