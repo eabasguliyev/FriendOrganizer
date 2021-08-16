@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using Autofac;
 using Autofac.Core;
 using FriendOrganizer.DataAccess;
@@ -12,26 +13,6 @@ using Prism.Events;
 
 namespace FriendOrganizer.UI.Startup
 {
-    class AsyncRegistration<T>
-    {
-        private Func<IComponentContext, Task<T>> _resolve;
-
-        public AsyncRegistration(Func<IComponentContext, Task<T>> resolve)
-        {
-            _resolve = resolve;
-        }
-
-        public bool Resolved { get; private set; }
-
-        public T Value { get; private set; }
-
-        public async Task Resolve(IComponentContext context)
-        {
-            this.Value = await _resolve(context);
-            this.Resolved = true;
-        }
-    }
-
     public class Bootstrapper
     {
         public IContainer Bootstrap()
@@ -48,11 +29,25 @@ namespace FriendOrganizer.UI.Startup
             builder.RegisterType<MainViewModel>().AsSelf();
 
             builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
-            builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
+            builder.RegisterType<FriendDetailViewModel>().Keyed<IDetailViewModel>(nameof(FriendDetailViewModel));
+            builder.RegisterType<MeetingDetailViewModel>().Keyed<IDetailViewModel>(nameof(MeetingDetailViewModel));
 
 
             builder.RegisterType<LookupDataService>().AsImplementedInterfaces();
             builder.RegisterType<FriendRepository>().As<IFriendRepository>();
+            builder.RegisterType<MeetingRepository>().As<IMeetingRepository>();
+
+
+            //builder.Register(async context =>
+            //{
+            //    return await Task.Factory.StartNew(() =>
+            //        new Func<FriendOrganizerDbContext>(() => new FriendOrganizerDbContext()));
+            //});
+
+            //builder.Register(async context =>
+            //{
+            //    return await Task.Factory.StartNew(() => new FriendOrganizerDbContext());
+            //});
 
             //builder.Register(async context =>
             //{

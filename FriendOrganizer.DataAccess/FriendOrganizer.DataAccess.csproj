@@ -65,6 +65,10 @@
     <Compile Include="Migrations\202108091620455_AddFriendPhoneNumbersTable.designer.cs">
       <DependentUpon>202108091620455_AddFriendPhoneNumbersTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108162000403_AddMeetingTable.cs" />
+    <Compile Include="Migrations\202108162000403_AddMeetingTable.designer.cs">
+      <DependentUpon>202108162000403_AddMeetingTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -87,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108091620455_AddFriendPhoneNumbersTable.resx">
       <DependentUpon>202108091620455_AddFriendPhoneNumbersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108162000403_AddMeetingTable.resx">
+      <DependentUpon>202108162000403_AddMeetingTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

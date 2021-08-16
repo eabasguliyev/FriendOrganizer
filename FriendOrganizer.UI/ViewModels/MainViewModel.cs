@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Autofac.Features.Indexed;
 using FriendOrganizer.Model;
 using FriendOrganizer.UI.Data;
 using FriendOrganizer.UI.Events;
@@ -14,15 +15,16 @@ namespace FriendOrganizer.UI.ViewModels
 {
     public class MainViewModel:ViewModelBase
     {
-        private readonly Func<IFriendDetailViewModel> _friendDetailViewModelCreator;
+        private readonly IIndex<string, IDetailViewModel> _detailViewModelCreator;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMessageDialogService _messageDialogService;
         private IDetailViewModel _detailViewModel;
 
-        public MainViewModel(INavigationViewModel navigationViewModel, Func<IFriendDetailViewModel> friendDetailViewModelCreator,
+        public MainViewModel(INavigationViewModel navigationViewModel, 
+            IIndex<string, IDetailViewModel> detailViewModelCreator,
             IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
         {
-            _friendDetailViewModelCreator = friendDetailViewModelCreator;
+            _detailViewModelCreator = detailViewModelCreator;
             _eventAggregator = eventAggregator;
             _messageDialogService = messageDialogService;
             NavigationViewModel = navigationViewModel;
@@ -64,12 +66,7 @@ namespace FriendOrganizer.UI.ViewModels
                     return;
             }
 
-            switch (args.ViewModelName)
-            {
-                case nameof(FriendDetailViewModel):
-                    DetailViewModel = _friendDetailViewModelCreator();
-                    break;
-            }
+            DetailViewModel = _detailViewModelCreator[args.ViewModelName];
 
             await DetailViewModel.LoadAsync(args.Id);
         }

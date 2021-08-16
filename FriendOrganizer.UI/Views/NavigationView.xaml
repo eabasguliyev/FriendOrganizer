@@ -6,43 +6,56 @@
              xmlns:local="clr-namespace:FriendOrganizer.UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="NavItemContainerStyle" TargetType="{x:Type ContentPresenter}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <DataTemplate x:Key="NavItemTemplate">
+            <Button Content="{Binding DisplayMember}"
+                    Command="{Binding OpenDetailViewCommand}">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid x:Name="Grid">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding Friends}">
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="Margin" Value="2"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding DisplayMember}"
-                                Command="{Binding OpenDetailViewCommand}">
-                            <Button.Template>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid x:Name="Grid">
-                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                            <Setter Property="FontWeight" Value="Bold"/>
-                                        </Trigger>
+        <GroupBox Grid.Row="0" Header="Friends">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Friends}" ItemContainerStyle="{StaticResource NavItemContainerStyle}"
+                              ItemTemplate="{StaticResource NavItemTemplate}"/>
+            </ScrollViewer>
+        </GroupBox>
 
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter Property="FontWeight" Value="Normal"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <GroupBox Grid.Row="1" Header="Meetings">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Meetings}" ItemContainerStyle="{StaticResource NavItemContainerStyle}"
+                              ItemTemplate="{StaticResource NavItemTemplate}"/>
+            </ScrollViewer>
+        </GroupBox>
     </Grid>
 </UserControl>
