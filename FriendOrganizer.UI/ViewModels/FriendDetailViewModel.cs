@@ -17,17 +17,15 @@ namespace FriendOrganizer.UI.ViewModels
     public class FriendDetailViewModel:DetailViewModelBase, IFriendDetailViewModel
     {
         private readonly IFriendRepository _friendRepository;
-        private readonly IMessageDialogService _messageDialogService;
         private readonly IProgrammingLanguageLookupDataService _programmingLanguageLookupDataService;
         private FriendWrapper _friend;
         private FriendPhoneNumberWrapper _selectedPhoneNumber;
 
         public FriendDetailViewModel(IFriendRepository friendRepository,
             IEventAggregator eventAggregator, IMessageDialogService messageDialogService,
-            IProgrammingLanguageLookupDataService programmingLanguageLookupDataService):base(eventAggregator)
+            IProgrammingLanguageLookupDataService programmingLanguageLookupDataService):base(eventAggregator, messageDialogService)
         {
             _friendRepository = friendRepository;
-            _messageDialogService = messageDialogService;
             _programmingLanguageLookupDataService = programmingLanguageLookupDataService;
 
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
@@ -65,9 +63,11 @@ namespace FriendOrganizer.UI.ViewModels
             }
         }
 
-        public override async Task LoadAsync(int? friendId)
+        public override async Task LoadAsync(int friendId)
         {
-            var friend = friendId.HasValue ? await _friendRepository.GetByIdAsync(friendId.Value) : CreateNewFriend();
+            var friend = friendId > 0 ? await _friendRepository.GetByIdAsync(friendId) : CreateNewFriend();
+
+            Id = friendId;
 
             InitializeFriend(friend);
 
@@ -92,6 +92,9 @@ namespace FriendOrganizer.UI.ViewModels
                 {
                     ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
                 }
+
+                if (e.PropertyName == nameof(Friend.FirstName) || e.PropertyName == nameof(Friend.LastName))
+                    SetTitle();
             };
 
             if (Friend.Id == 0)
@@ -103,6 +106,13 @@ namespace FriendOrganizer.UI.ViewModels
             }
 
             ((DelegateCommand) SaveCommand).RaiseCanExecuteChanged();
+
+            SetTitle();
+        }
+
+        private void SetTitle()
+        {
+            Title = $"{Friend.FirstName} {Friend.LastName}";
         }
 
         private void InitializePhoneNumbers(ICollection<FriendPhoneNumber> friendPhoneNumbers)
@@ -165,6 +175,8 @@ namespace FriendOrganizer.UI.ViewModels
             
             HasChanges = _friendRepository.HasChanges();
 
+            Id = Friend.Id;
+
             RaiseDetailSavedEvent(Friend.Id, $"{Friend.FirstName} {Friend.LastName}");
         }
 
@@ -180,11 +192,11 @@ namespace FriendOrganizer.UI.ViewModels
         {
             if (await _friendRepository.HasMeetingsAsync(Friend.Id))
             {
-                _messageDialogService.ShowInfoDialog($"{Friend.FirstName} {Friend.LastName} can't be deleted, as this friend is part of at least one meeting.");
+                MessageDialogService.ShowInfoDialog($"{Friend.FirstName} {Friend.LastName} can't be deleted, as this friend is part of at least one meeting.");
                 return;
             }
             var result =
-                _messageDialogService.ShowOkCancelDialog(
+                MessageDialogService.ShowOkCancelDialog(
                     $"Do you really want to delete friend {Friend.FirstName} {Friend.LastName}", "Info");
 
             if (result == MessageDialogResult.Cancel)
