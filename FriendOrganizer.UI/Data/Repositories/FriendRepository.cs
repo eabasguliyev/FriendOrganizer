@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FriendOrganizer.DataAccess;
@@ -23,6 +24,13 @@ namespace FriendOrganizer.UI.Data.Repositories
         public void RemovePhoneNumber(FriendPhoneNumber phoneNumber)
         {
             Context.FriendPhoneNumbers.Remove(phoneNumber);
+        }
+
+        public async Task<bool> HasMeetingsAsync(int friendId)
+        {
+            return await Context.Meetings.AsNoTracking()
+                .Include(m => m.Friends).
+                AnyAsync(m => m.Friends.Any(f => f.Id == friendId));
         }
     }
 }

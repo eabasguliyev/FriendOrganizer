@@ -47,6 +47,8 @@ namespace FriendOrganizer.DataAccess
 
             foreach (var entity in entries)
             {
+                if (entity == null)
+                    continue;
                 var properties = from p in entity.GetType().GetProperties()
                     where p.PropertyType.Name == str
                     select p;
