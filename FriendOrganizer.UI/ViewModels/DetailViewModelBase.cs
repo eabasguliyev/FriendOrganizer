@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using FriendOrganizer.UI.Events;
 using FriendOrganizer.UI.Views.Services;
@@ -86,6 +87,13 @@ namespace FriendOrganizer.UI.ViewModels
             });
         }
 
+        protected virtual void RaiseCollectionSavedEvent()
+        {
+            EventAggregator.GetEvent<AfterCollectionSavedEvent>().Publish(new AfterCollectionSavedEventArgs()
+            {
+                ViewModelName = this.GetType().Name
+            });
+        }
         protected virtual void OnCloseDetailViewExecute()
         {
             if (HasChanges)

@@ -115,7 +115,10 @@
     <Compile Include="Data\Repositories\GenericRepository.cs" />
     <Compile Include="Data\Repositories\IGenericRepository.cs" />
     <Compile Include="Data\Repositories\IMeetingRepository.cs" />
+    <Compile Include="Data\Repositories\IProgrammingLanguageRepository.cs" />
     <Compile Include="Data\Repositories\MeetingRepository.cs" />
+    <Compile Include="Data\Repositories\ProgrammingLanguageRepository.cs" />
+    <Compile Include="Events\AfterCollectionSavedEvent.cs" />
     <Compile Include="Events\AfterDetailClosedEvent.cs" />
     <Compile Include="Events\AfterDetailDeletedEvent.cs" />
     <Compile Include="Events\AfterDetailSavedEvent.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="ViewModels\MeetingDetailViewModel.cs" />
     <Compile Include="ViewModels\NavigationItemViewModel.cs" />
     <Compile Include="ViewModels\NavigationViewModel.cs" />
+    <Compile Include="ViewModels\ProgrammingLanguageDetailViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\FriendDetailView.xaml.cs">
       <DependentUpon>FriendDetailView.xaml</DependentUpon>
@@ -142,6 +146,9 @@
     <Compile Include="Views\NavigationView.xaml.cs">
       <DependentUpon>NavigationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ProgrammingLanguageDetailView.xaml.cs">
+      <DependentUpon>ProgrammingLanguageDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Services\IMessageDialogService.cs" />
     <Compile Include="Views\Services\MessageDialogService.cs" />
     <Compile Include="Wrappers\FriendPhoneNumberWrapper.cs" />
@@ -149,6 +156,7 @@
     <Compile Include="Wrappers\MeetingWrapper.cs" />
     <Compile Include="Wrappers\ModelWrapper.cs" />
     <Compile Include="Wrappers\NotifyDataErrorInfoBase.cs" />
+    <Compile Include="Wrappers\ProgrammingLanguageWrapper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -172,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProgrammingLanguageDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
