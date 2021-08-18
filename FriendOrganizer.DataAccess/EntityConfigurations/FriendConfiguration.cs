@@ -18,6 +18,8 @@ namespace FriendOrganizer.DataAccess.EntityConfigurations
 
             Property(f => f.Email)
                 .HasMaxLength(50);
+
+            Property(f => f.RowVersion).IsConcurrencyToken();
         }
     }
 }

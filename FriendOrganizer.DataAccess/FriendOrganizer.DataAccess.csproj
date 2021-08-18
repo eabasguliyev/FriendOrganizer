@@ -69,6 +69,10 @@
     <Compile Include="Migrations\202108162000403_AddMeetingTable.designer.cs">
       <DependentUpon>202108162000403_AddMeetingTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108172303424_AddRowVersionToFriendTable.cs" />
+    <Compile Include="Migrations\202108172303424_AddRowVersionToFriendTable.designer.cs">
+      <DependentUpon>202108172303424_AddRowVersionToFriendTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108162000403_AddMeetingTable.resx">
       <DependentUpon>202108162000403_AddMeetingTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108172303424_AddRowVersionToFriendTable.resx">
+      <DependentUpon>202108172303424_AddRowVersionToFriendTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
