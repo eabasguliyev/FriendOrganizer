@@ -1,4 +1,4 @@
-﻿<Window x:Class="FriendOrganizer.UI.MainWindow"
+﻿<mah:MetroWindow x:Class="FriendOrganizer.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:FriendOrganizer.UI"
         xmlns:view="clr-namespace:FriendOrganizer.UI.Views"
         xmlns:viewModel="clr-namespace:FriendOrganizer.UI.ViewModels"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Friend Organizer" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
@@ -46,17 +48,26 @@
 
         <TabControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding DetailViewModels}"
                     SelectedItem="{Binding SelectedDetailViewModel, Mode=TwoWay}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}"
+                       BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="Background" Value="#333333"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Style>
+            </TabControl.ItemContainerStyle>
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Title}"/>
-                        <TextBlock Text="*" Visibility="{Binding HasChanges, Mode=OneWay, Converter={StaticResource booleanToVisibilityConverter}}"/>
-                        <Button Margin="2" Content="x" FontSize="20"
+                        <TextBlock Text="*" Visibility="{Binding HasChanges, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <Button Margin="2 0 2 0" Content="x" FontSize="20"
                                 VerticalContentAlignment="Top"
-                                Command="{Binding CloseDetailViewCommand}"/>
+                                Command="{Binding CloseDetailViewCommand}"
+                                Style="{StaticResource MahApps.Styles.Button.Chromeless}"/>
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
     </Grid>
-</Window>
+</mah:MetroWindow>
